@@ -1,12 +1,12 @@
 const server = require('./app');
 const { conn, Categoria } = require('./db');
-
+const port = process.env.PORT || 3001;
 // Syncing all the models at once.
 //si pongo false en force, van quedando los datos en la db
 //para correr el back junto con la api, podemos poner este puerto en 3002, p.e.
 conn.sync({ force: false }).then(async () => {
-  server.listen(process.env.PORT, async () => {
-    console.log(process.env.PORT); // eslint-disable-line no-console
+  server.listen(port, async () => {
+    console.log(port); // eslint-disable-line no-console
   });
 
 
