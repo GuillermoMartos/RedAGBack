@@ -5,8 +5,8 @@ const { conn, Categoria } = require('./db');
 //si pongo false en force, van quedando los datos en la db
 //para correr el back junto con la api, podemos poner este puerto en 3002, p.e.
 conn.sync({ force: false }).then(async () => {
-  server.listen(3001, async () => {
-    console.log('%s listening at 3001'); // eslint-disable-line no-console
+  server.listen(process.env.PORT, async () => {
+    console.log(process.env.PORT); // eslint-disable-line no-console
   });
 
 
