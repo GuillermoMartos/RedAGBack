@@ -7,27 +7,7 @@ const port = process.env.PORT || 3001;
 console.log('soy el port', port, 'soy host', DB_HOST, 'soy pass', DB_PASSWORD, 'soy name', DB_NAME, 'soy user', DB_USER, 'soy prod', process.env.NODE_ENV === "production", 'soy URL', process.env.DATABASE_URL)
 let sequelize =
   process.env.NODE_ENV === "production"
-    ? new Sequelize({
-      database: DB_NAME,
-      dialect: "postgres",
-      host: DB_HOST,
-      port: port,
-      username: DB_USER,
-      password: DB_PASSWORD,
-      pool: {
-        max: 3,
-        min: 1,
-        idle: 10000,
-      },
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false,
-        },
-        keepAlive: true,
-      },
-      ssl: true,
-    })
+    ? new Sequelize(process.env.DATABASE_URL)
     : new Sequelize(`postgres://postgres:superperro1!@localhost/redag`, {
       logging: false, // set to console.log to see the raw SQL queries
       native: false, // lets Sequelize know we can use pg-native for ~30% more speed
