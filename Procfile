@@ -1,1 +1,1 @@
-web: node db
+web: node index
