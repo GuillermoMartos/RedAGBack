@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 const port = process.env.PORT || 3001;
-console.log('soy el port', port, 'soy host', DB_HOST, 'soy pass', DB_PASSWORD, 'soy name', DB_NAME, 'soy user', DB_USER)
+console.log('soy el port', port, 'soy host', DB_HOST, 'soy pass', DB_PASSWORD, 'soy name', DB_NAME, 'soy user', DB_USER, 'soy prod', process.env.NODE_ENV === "production")
 let sequelize =
   process.env.NODE_ENV === "production"
     ? new Sequelize({
