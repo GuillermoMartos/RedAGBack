@@ -102,22 +102,30 @@ server.post("/ingreso", async (req, res) => {
     console.log(encrypt(password))
 
     try {
-
+        console.log('llega?')
         let profile = await Persona.findOne({ where: { email: email.toLowerCase() } });
+        console.log('llega aun?')
 
         if (!profile) {
+            console.log("El mail no corresponde con usuarios en la DB")
             return res.send({ notFound: "El mail no corresponde con usuarios en la DB", email });
         }
-        if (profile.active === false)
+        if (profile.active === false) {
+            console.log("se debe confirmar la cuenta para entrar (ver mail)")
             return res.json({ account: "se debe confirmar la cuenta para entrar (ver mail)", email });
+        }
         if (encrypt(password) == profile.password) {
+            console.log('todo ok, logeado:', profile)
             return res.send(profile);
         }
         if (encrypt(password) !== profile.password) {
-            console.log(profile.password)
+            console.log(profile.password, 'no coincide ')
             res.send({ badPassword: "tu contraseña no es la correcta" })
         }
+        console.log('todo ok, logeado:', profile)
+        res.send(profile)
     } catch (error) {
+        console.log('error', error)
         let info = await mailer.sendMail({
             from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
             to: 'guille.l.martos@gmail.com', // list of receivers
