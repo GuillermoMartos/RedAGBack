@@ -102,9 +102,7 @@ server.post("/ingreso", async (req, res) => {
     console.log(encrypt(password))
 
     try {
-        console.log('llega?')
         let profile = await Persona.findOne({ where: { email: email.toLowerCase() } });
-        console.log('llega aun?')
 
         if (!profile) {
             console.log("El mail no corresponde con usuarios en la DB")
@@ -119,11 +117,11 @@ server.post("/ingreso", async (req, res) => {
             return res.send(profile);
         }
         if (encrypt(password) !== profile.password) {
-            console.log(profile.password, 'no coincide ')
-            res.send({ badPassword: "tu contraseña no es la correcta" })
+            console.log(profile.password, 'no coincide con', encrypt(password))
+            return res.send({ badPassword: "tu contraseña no es la correcta" })
         }
         console.log('todo ok, logeado:', profile)
-        res.send(profile)
+        return res.send(profile)
     } catch (error) {
         console.log('error', error)
         let info = await mailer.sendMail({
