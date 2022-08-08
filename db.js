@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, PORT } = process.env;
 const port = process.env.PORT || 3001;
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
 console.log('host: ', DB_HOST, 'user: ', DB_USER, 'port: ', PORT, 'name: ', DB_NAME, 'PASS: ', DB_PASSWORD, 'url: ')
 
 sequelize = new Sequelize(process.env.DATABASE_URL, {
