@@ -1,34 +1,34 @@
 // require("dotenv").config();
-const { Sequelize } = require("sequelize");
+// const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, PORT } = process.env;
 const port = process.env.PORT || 3001;
-console.log('host: ', DB_HOST, 'user: ', DB_USER, 'port: ', PORT, 'name: ', DB_NAME, 'PASS: ', DB_PASSWORD, 'url: ', DB_URL)
+const Sequelize = require('sequelize');
+console.log('host: ', DB_HOST, 'user: ', DB_USER, 'port: ', PORT, 'name: ', DB_NAME, 'PASS: ', DB_PASSWORD, 'url: ')
+
+sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  }
+}
+);
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
 let sequelize =
   process.env.NODE_ENV === "production"
-    ? new Sequelize({
-      database: DB_NAME,
-      dialect: "postgres",
-      host: DB_HOST,
-      port: PORT,
-      username: DB_USER,
-      password: DB_PASSWORD,
-      pool: {
-        max: 3,
-        min: 1,
-        idle: 10000,
-
-      },
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false,
-        },
-        keepAlive: true,
-      },
-      ssl: true,
-    })
+    ? console.log('me conecté con heroku!')
     : new Sequelize(`postgres://postgres:superperro1!@localhost/redag`, {
       logging: false, // set to console.log to see the raw SQL queries
       native: false, // lets Sequelize know we can use pg-native for ~30% more speed
