@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, PORT } = process.env;
 const port = process.env.PORT || 3001;
-console.log('host: ', DB_HOST, 'user: ', DB_USER, 'port: ', PORT, 'name: ', DB_NAME, 'PASS: ', DB_PASSWORD)
+console.log('host: ', DB_HOST, 'user: ', DB_USER, 'port: ', PORT, 'name: ', DB_NAME, 'PASS: ', DB_PASSWORD, 'url: ', DB_URL)
 let sequelize =
   process.env.NODE_ENV === "production"
     ? new Sequelize({
@@ -18,6 +18,7 @@ let sequelize =
         max: 3,
         min: 1,
         idle: 10000,
+
       },
       dialectOptions: {
         ssl: {
