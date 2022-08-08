@@ -62,7 +62,7 @@ server.post("/registrar", async (req, res) => {
                      style='cursor:pointer; font-family:verdana; text-decoration:none'>Gracias por registrarte!<br>Hacé click 👉<span style="text-decoration:underline">EN ESTE ENLACE</span>👈 para confirmar el registro!</a></h3>
                 `,
                 });
-                // console.log("mail saxesfuli sent");
+                console.log('todo ok, mail enviado y persona creada: ', newProfile)
             } catch (error) {
                 let info = await mailer.sendMail({
                     from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
@@ -121,7 +121,7 @@ server.post("/ingreso", async (req, res) => {
             console.log(profile.password, 'no coincide con', encrypt(password))
             return res.send({ badPassword: "tu contraseña no es la correcta" })
         }
-        console.log('todo ok, logeado:', profile)
+        console.log('todo ok, logeado')
         return res.send(profile)
     } catch (error) {
         // console.log('error', error)
