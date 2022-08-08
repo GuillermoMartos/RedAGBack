@@ -1,12 +1,12 @@
 const express = require('express');
 const morgan = require('morgan');
 const routes = require('./routes/index')
-const cors = require('cors')
+// const cors = require('cors')
 
 const server = express();
 
 server.name = 'API';
-server.use(cors)
+// server.use(cors)
 server.use(express.urlencoded({ extended: true, limit: '50mb' }));
 server.use(express.json({ limit: '50mb' }));
 server.use(morgan('dev'));
