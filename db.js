@@ -7,7 +7,8 @@ const port = process.env.PORT || 3001;
 const { Sequelize } = require('sequelize');
 console.log('host: ', DB_HOST, 'user: ', DB_USER, 'port: ', PORT, 'name: ', DB_NAME, 'PASS: ', DB_PASSWORD, 'url: ')
 
-sequelize = new Sequelize(process.env.DATABASE_URL, {
+
+let sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialectOptions: {
     ssl: {
       require: true,
@@ -26,13 +27,13 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-let sequelize =
-  process.env.NODE_ENV === "production"
-    ? console.log('me conecté con heroku!')
-    : new Sequelize(`postgres://postgres:superperro1!@localhost/redag`, {
-      logging: false, // set to console.log to see the raw SQL queries
-      native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-    });
+// let sequelize =
+//   process.env.NODE_ENV === "production"
+//     ? console.log('me conecté con heroku!')
+//     : new Sequelize(`postgres://postgres:superperro1!@localhost/redag`, {
+//       logging: false, // set to console.log to see the raw SQL queries
+//       native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+//     });
 
 const basename = path.basename(__filename);
 
