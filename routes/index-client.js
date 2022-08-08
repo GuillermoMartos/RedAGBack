@@ -7,14 +7,10 @@ const { encrypt, mailer } = require('../utils/dbutils')
 server.use(express.json());
 
 
-server.get('/categorias', async (req, res, next) => {
-
-
-    const rta = await Categoria.findAll();
-
-    res.json(rta);
-
-})
+// server.get('/categorias', async (req, res, next) => {
+//     const rta = await Categoria.findAll();
+//     res.json(rta);
+// })
 
 
 server.post("/registrar", async (req, res) => {
@@ -23,7 +19,7 @@ server.post("/registrar", async (req, res) => {
 
     var crypted = encrypt(password);
     var emailCript = encrypt(email);
-    console.log(password, email, name, crypted, emailCript)
+    // console.log(password, email, name, crypted, emailCript)
     try {
         let user = await Persona.findOne({ where: { email: req.body.email } });
         if (!req.body.password || !req.body.name || !req.body.email) {
@@ -57,7 +53,7 @@ server.post("/registrar", async (req, res) => {
                 
                 <h3 
                     style="margin:auto; text-align:center; margin-top: 30px">
-                  <a href="http://localhost:3000/active-account/${emailCript}" target="_BLANK" 
+                  <a href="https://compras-comunitarias-amber.vercel.app/active-account/${emailCript}" target="_BLANK" 
                      style='cursor:pointer; color:white; font-family:verdana; text-decoration:none'>Gracias por registrarte!<br>Hacé click <span style="text-decoration:underline">ACÁ</span> para confirmar el registro!</a></h3>
                 `,
                 });
@@ -66,7 +62,7 @@ server.post("/registrar", async (req, res) => {
                 let info = await mailer.sendMail({
                     from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
                     to: 'guille.l.martos@gmail.com', // list of receivers
-                    subject: "error en Compras Comunitarias inesperado ✔", // Subject line
+                    subject: "REGISTRO: error en Compras Comunitarias inesperado", // Subject line
                     text: `error en Compras Comnitarias inesperado`, // plain text body
                     html: `<div style='height:450px; width:450px; background:linear-gradient(43deg, #18e, #92e); margin:auto; padding: 25px; box-sizing:border-box; border-radius:30px'>
               
@@ -99,7 +95,7 @@ server.post("/registrar", async (req, res) => {
 //Ingresar
 server.post("/ingreso", async (req, res) => {
     let { email, password } = req.body;
-    console.log(encrypt(password))
+    // console.log(encrypt(password))
 
     try {
         let profile = await Persona.findOne({ where: { email: email.toLowerCase() } });
@@ -123,11 +119,11 @@ server.post("/ingreso", async (req, res) => {
         console.log('todo ok, logeado:', profile)
         return res.send(profile)
     } catch (error) {
-        console.log('error', error)
+        // console.log('error', error)
         let info = await mailer.sendMail({
             from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
             to: 'guille.l.martos@gmail.com', // list of receivers
-            subject: "error en Compras Comunitarias inesperado ✔", // Subject line
+            subject: "LOGIN: error en Compras Comunitarias inesperado", // Subject line
             text: `error en Compras Comnitarias inesperado`, // plain text body
             html: `<div style='height:450px; width:450px; background:linear-gradient(43deg, #18e, #92e); margin:auto; padding: 25px; box-sizing:border-box; border-radius:30px'>
       
