@@ -10,11 +10,11 @@ conn.sync({ force: false }).then(async () => {
   });
 
 
-  // let apiDiet = ['Quesos', 'Dulces', 'Fiambres', 'Lácteos', 'Salsas', 'Picantes', 'Huevos', 'Aceites', 'Sales', 'Hongos', 'Comidas veganas', 'Pan y Masas', 'Legumbres', 'Baño y Limpieza', 'Plantas', 'Verduras', 'Otros']
+  let apiDiet = ['Quesos', 'Dulces', 'Fiambres', 'Lácteos', 'Salsas', 'Picantes', 'Huevos', 'Aceites', 'Sales', 'Hongos', 'Comidas veganas', 'Pan y Masas', 'Legumbres', 'Baño y Limpieza', 'Plantas', 'Verduras', 'Otros']
 
-  // const crear = await Categoria.bulkCreate(apiDiet.map(d => {
-  //   return {
-  //     nombre: d,
-  //   }
-  // }))
+  const crear = await Categoria.bulkCreate(apiDiet.map(d => {
+    return {
+      nombre: d,
+    }
+  }))
 });
