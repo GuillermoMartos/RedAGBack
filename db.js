@@ -27,6 +27,7 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
+// para conexion local, el resto del ternario
 // let sequelize =
 //   process.env.NODE_ENV === "production"
 //     ? console.log('me conecté con heroku!')
