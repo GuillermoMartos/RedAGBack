@@ -147,7 +147,7 @@ server.post("/ingreso", async (req, res) => {
 });
 
 server.get("/prueba", async (req, res) => {
-    res.sendFile(path.join(__dirname, './utils/cuentaActivada.html'));
+    res.sendFile(path.join(__dirname, '../utils/cuentaActivada.html'));
 })
 
 //Busqueda Persona por pass para activar x mailing
