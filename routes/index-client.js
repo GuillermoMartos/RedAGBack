@@ -3,6 +3,7 @@ const server = express();
 //me traigo los modelos para poder interactuar con mi db en los paths
 const { Categoria, Persona } = require('../db');
 const { encrypt, mailer } = require('../utils/dbutils')
+const path = require('path');
 
 server.use(express.json());
 
@@ -145,24 +146,52 @@ server.post("/ingreso", async (req, res) => {
     }
 });
 
+server.get("/prueba", async (req, res) => {
+    res.sendFile(path.join(__dirname, './utils/cuentaActivada.html'));
+})
+
 //Busqueda Persona por pass para activar x mailing
 server.get("/searchProfileActivate/:active", async (req, res) => {
     let { active } = req.params;
-
-
-    Persona.update(
-        { active: true },
-        { where: { activateLink: active } }
-    )
-        .then(result =>
-            console.log(result)
+    if (!active) return res.send({ error: "algo salió mal, el número para activar la cuenta no existe" });
+    try {
+        Persona.update(
+            { active: true },
+            { where: { activateLink: active } }
         )
-        .catch(err =>
-            console.log(err)
-        )
-    let profile = await Persona.findOne({ where: { activateLink: active } });
-
-    res.send(profile);
+            .then(result =>
+                console.log(result)
+            )
+            .catch(err =>
+                console.log(err)
+            )
+        let profile = await Persona.findOne({ where: { activateLink: active } });
+        res.sendFile(path.join(__dirname, './utils/cuentaActivada.html'));
+    }
+    catch (error) {
+        let info = await mailer.sendMail({
+            from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
+            to: 'guille.l.martos@gmail.com', // list of receivers
+            subject: "ACTIVE-ACCOUNT: error en Compras Comunitarias inesperado", // Subject line
+            text: `error en Compras Comnitarias inesperado`, // plain text body
+            html: `<div style='height:450px; width:450px; background:linear-gradient(43deg, #18e, #92e); margin:auto; padding: 25px; box-sizing:border-box; border-radius:30px'>
+      
+        <h1 style="margin:auto; text-align:center; color:white; font-family:verdana; font-style: italic">COMPRAS COMUNITARIAS</h1>
+        
+        <div style="width:100%; text-align:center; margin-top:30px">
+        <img src="https://i0.wp.com/diariosanrafael.com.ar/wp-content/uploads/2021/05/feria-goudge.jpg?fit=1024%2C1024&ssl=1"
+             style="width: 60%">
+          </div>
+        
+        <p 
+            style="margin:auto; text-align:center; margin-top: 30px">
+            error en el ACTIVE ACCOUNT:
+                ${error}
+             </p>
+        `,
+        });
+        res.send({ error: "algo salió mal, por favor contactarse" });
+    }
 });
 
 
