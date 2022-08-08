@@ -54,11 +54,11 @@ server.post("/registrar", async (req, res) => {
                 
                 <h3 
                     style="margin:auto; text-align:center; margin-top: 30px">
-                  <a href="https://compras-comunitarias-amber.vercel.app/active-account/${emailCript}" target="_BLANK" 
-                     style='cursor:pointer; color:white; font-family:verdana; text-decoration:none'>Gracias por registrarte!<br>Hacé click <span style="text-decoration:underline">ACÁ</span> para confirmar el registro!</a></h3>
+                  <a href="https://compras-red-ag.herokuapp.com/client/searchProfileActivate/${emailCript}" target="_BLANK" 
+                     style='cursor:pointer; font-family:verdana; text-decoration:none'>Gracias por registrarte!<br>Hacé click 👉<span style="text-decoration:underline">EN ESTE ENLACE</span>👈 para confirmar el registro!</a></h3>
                 `,
                 });
-                console.log("mail saxesfuli sent");
+                // console.log("mail saxesfuli sent");
             } catch (error) {
                 let info = await mailer.sendMail({
                     from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
@@ -146,10 +146,6 @@ server.post("/ingreso", async (req, res) => {
     }
 });
 
-server.get("/prueba", async (req, res) => {
-    res.sendFile(path.join(__dirname, '../utils/cuentaActivada.html'));
-})
-
 //Busqueda Persona por pass para activar x mailing
 server.get("/searchProfileActivate/:active", async (req, res) => {
     let { active } = req.params;
@@ -166,7 +162,7 @@ server.get("/searchProfileActivate/:active", async (req, res) => {
                 console.log(err)
             )
         let profile = await Persona.findOne({ where: { activateLink: active } });
-        res.sendFile(path.join(__dirname, './utils/cuentaActivada.html'));
+        res.sendFile(path.join(__dirname, '../utils/cuentaActivada.html'));
     }
     catch (error) {
         let info = await mailer.sendMail({
