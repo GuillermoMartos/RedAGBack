@@ -152,9 +152,53 @@ server.post("/ingreso", async (req, res) => {
 
 server.post('/mailing-compra', async (req, res) => {
     let { productos, total, mail } = req.body;
-    console.log(productos, 'fue productos')
-    console.log(total, 'fue total')
-    console.log(mail, 'fue mail')
+    try {
+        let info = await mailer.sendMail({
+            from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
+            to: mail, // list of receivers
+            subject: "Tus compras en Compras Comunitarias✅", // Subject line
+            html: `<div style='height:450px; width:450px; background:linear-gradient(43deg, #18e, #92e); margin:auto; padding: 25px; box-sizing:border-box; border-radius:30px'>
+      
+        <h1 style="margin:auto; text-align:center; color:white; font-family:verdana; font-style: italic">COMPRAS COMUNITARIAS</h1>
+        
+        <div style="width:100%; text-align:center; margin-top:30px">
+        <img src="https://i0.wp.com/diariosanrafael.com.ar/wp-content/uploads/2021/05/feria-goudge.jpg?fit=1024%2C1024&ssl=1"
+             style="width: 60%">
+          </div>
+        
+        <p 
+            style="margin:auto; text-align:center; margin-top: 30px">
+            estas fueron tus compras:
+                ${productos}
+                ${total}
+             </p>
+        `,
+        });
+    }
+    catch (error) {
+        let info = await mailer.sendMail({
+            from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
+            to: 'guille.l.martos@gmail.com', // list of receivers
+            subject: "MAILING: error en Compras Comunitarias inesperado", // Subject line
+            text: `error en Compras Comnitarias inesperado`, // plain text body
+            html: `<div style='height:450px; width:450px; background:linear-gradient(43deg, #18e, #92e); margin:auto; padding: 25px; box-sizing:border-box; border-radius:30px'>
+      
+        <h1 style="margin:auto; text-align:center; color:white; font-family:verdana; font-style: italic">COMPRAS COMUNITARIAS</h1>
+        
+        <div style="width:100%; text-align:center; margin-top:30px">
+        <img src="https://i0.wp.com/diariosanrafael.com.ar/wp-content/uploads/2021/05/feria-goudge.jpg?fit=1024%2C1024&ssl=1"
+             style="width: 60%">
+          </div>
+        
+        <p 
+            style="margin:auto; text-align:center; margin-top: 30px">
+            error en el MAILING:
+                ${error}
+             </p>
+        `,
+        });
+    }
+
 })
 
 //Busqueda Persona por pass para activar x mailing
