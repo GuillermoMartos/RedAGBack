@@ -172,13 +172,13 @@ server.post('/mailing-compra', async (req, res) => {
              </p>
              ${productos.map((compra) => {
                 return (
-                    `<h6>* ${compra.nombre}-${compra.marca} x ${compra.cantidad}........${compra.precio}</h6>`
+                    `<h4>* ${compra.nombre}-${compra.marca} x ${compra.cantidad}........${compra.precio}</h4>`
                 )
             })}
-            <h6>---------------------------------------------------------</h6>
-            <h6>*** SUB-TOTAL.......................................${(total * 1).toFixed(2)}</h6>
-            <h6>*** 5% Cooperativa................................${(total * 0.05).toFixed(2)}</h6>
-            <h6><strong>*** TOTAL FINAL....................................${(total * 1 + total * 0.05).toFixed(2)}</strong></h6>
+            <h4>---------------------------------------------------------</h4>
+            <h4>*** SUB-TOTAL.......................................${(total * 1).toFixed(2)}</h4>
+            <h4>*** 5% Cooperativa................................${(total * 0.05).toFixed(2)}</h4>
+            <h4><strong>*** TOTAL FINAL....................................${(total * 1 + total * 0.05).toFixed(2)}</strong></h4>
         </div>
         `,
         });
