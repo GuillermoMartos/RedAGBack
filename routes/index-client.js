@@ -157,7 +157,7 @@ server.post('/mailing-compra', async (req, res) => {
             from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
             to: mail, // list of receivers
             subject: "Tus compras en Compras Comunitarias✅", // Subject line
-            html: `<div style='height:450px; width:450px; background:linear-gradient(43deg, #18e, #92e); margin:auto; padding: 25px; box-sizing:border-box; border-radius:30px'>
+            html: `<div style='width:450px; background:linear-gradient(43deg, #18e, #92e); margin:auto; padding: 25px; box-sizing:border-box; border-radius:30px'>
       
         <h1 style="margin:auto; text-align:center; color:white; font-family:verdana; font-style: italic">COMPRAS COMUNITARIAS</h1>
         
