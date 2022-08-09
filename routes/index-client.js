@@ -206,7 +206,7 @@ server.post('/mailing-compra', async (req, res) => {
         `,
         });
     }
-
+    res.status(200)
 })
 
 //Busqueda Persona por pass para activar x mailing
