@@ -150,6 +150,12 @@ server.post("/ingreso", async (req, res) => {
     }
 });
 
+server.post('/mailing-compra', async (req, res) => {
+    let { productos, total } = req.body;
+    console.log(productos, 'fue productos')
+    console.log(total, 'fue total')
+})
+
 //Busqueda Persona por pass para activar x mailing
 server.get("/searchProfileActivate/:active", async (req, res) => {
     let { active } = req.params;
