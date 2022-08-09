@@ -161,7 +161,7 @@ server.post('/mailing-compra', async (req, res) => {
       
         <h1 style="margin:auto; text-align:center; color:white; font-family:verdana; font-style: italic">COMPRAS COMUNITARIAS</h1>
         
-        <div style="width:100%; text-align:center; margin-top:30px">
+        <div style="width:100%; color:white; text-align:center; margin-top:30px">
         <img src="https://i0.wp.com/diariosanrafael.com.ar/wp-content/uploads/2021/05/feria-goudge.jpg?fit=1024%2C1024&ssl=1"
              style="width: 60%">
           </div>
@@ -172,13 +172,13 @@ server.post('/mailing-compra', async (req, res) => {
              </p>
              ${productos.map((compra) => {
                 return (
-                    `<h2>* ${compra.nombre}-${compra.marca} x ${compra.cantidad}........${compra.precio}</h2>`
+                    `<h6>* ${compra.nombre}-${compra.marca} x ${compra.cantidad}........${compra.precio}</h6>`
                 )
             })}
-            <h2>---------------------------------------------------------</h2>
-            <h2>*** SUB-TOTAL.......................................${(total * 1).toFixed(2)}</h2>
-            <h2>*** 5% Cooperativa................................${(total * 0.05).toFixed(2)}</h2>
-            <h2><strong>*** TOTAL FINAL....................................${(total * 1 + total * 0.05).toFixed(2)}</strong></h2>
+            <h6>---------------------------------------------------------</h6>
+            <h6>*** SUB-TOTAL.......................................${(total * 1).toFixed(2)}</h6>
+            <h6>*** 5% Cooperativa................................${(total * 0.05).toFixed(2)}</h6>
+            <h6><strong>*** TOTAL FINAL....................................${(total * 1 + total * 0.05).toFixed(2)}</strong></h6>
         </div>
         `,
         });
