@@ -171,7 +171,7 @@ server.post('/mailing-compra', async (req, res) => {
             estas fueron tus compras:
                 ${productos.map((compra) => {
                 return (
-                    <h2>* {compra.nombre}-{compra.marca} x {compra.cantidad}........${compra.precio}</h2>
+                    `<h2>* ${compra.nombre}-${compra.marca} x ${compra.cantidad}........${compra.precio}</h2>`
                 )
             })}
             <h2>---------------------------------------------------------</h2>
