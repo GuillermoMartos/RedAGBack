@@ -155,7 +155,7 @@ server.post('/mailing-compra', async (req, res) => {
     //meto las compras a base de datos y luego mando nuevo endpoint para mailing
     try {
         let nombreCliente = await Persona.findOne({ where: { email: email } });
-        productos.map((compra) => {
+        productos.map(async (compra) => {
             var nuevaCompra = await new Compra({
                 cliente: nombreCliente,
                 mailCliente: mail,
