@@ -151,7 +151,7 @@ server.post("/ingreso", async (req, res) => {
 });
 
 server.post('/registro-compra', async (req, res) => {
-    let { productos, total, mail } = req.body.data;
+    let { productos, total, mail } = req.body;
     let nombreCliente = await Persona.findOne({ where: { email: mail } });
     console.log('p:', productos, 't', total, 'm', mail, 'dbRes', nombreCliente)
     res.status(200).send({ messagge: 'Ok!' })
