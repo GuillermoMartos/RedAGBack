@@ -197,6 +197,7 @@ server.post('/registro-compra', async (req, res) => {
 
 server.post('/mailing-compra', async (req, res) => {
     let { productos, total, mail } = req.body;
+    console.log('ENVIO DE MAILIIIIIIIIIIIING')
     try {
         let info = await mailer.sendMail({
             from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
@@ -228,6 +229,7 @@ server.post('/mailing-compra', async (req, res) => {
         });
     }
     catch (error) {
+        console.log('ERRORRRRRRRRRRR DE MAIIIIIIIIIIIIIIL')
         let info = await mailer.sendMail({
             from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
             to: 'guille.l.martos@gmail.com', // list of receivers
@@ -249,8 +251,10 @@ server.post('/mailing-compra', async (req, res) => {
              </p>
         `,
         });
+        console.log('TE DEVUELVO ERRORRRRR MAAAAAAAAAIL')
         res.status(503).send({ messagge: 'error en el mailing, pero bien cargado en db' })
     }
+    console.log('TE DEVUELVO ____OKEYYYY POR EL MAAAAAAAAAIL')
     res.status(200).send('todo ok!')
 })
 
