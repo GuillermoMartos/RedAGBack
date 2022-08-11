@@ -150,11 +150,19 @@ server.post("/ingreso", async (req, res) => {
     }
 });
 
+server.post('/registro-compra', async (req, res) => {
+    let { productos, total, mail } = req.body.data;
+    let nombreCliente = await Persona.findOne({ where: { email: mail } });
+    console.log('p:', productos, 't', total, 'm', mail, 'dbRes', nombreCliente)
+    res.status(200).send({ messagge: 'Ok!' })
+})
+
 server.post('/mailing-compra', async (req, res) => {
     let { productos, total, mail } = req.body;
     //meto las compras a base de datos y luego mando nuevo endpoint para mailing
+    var errores = 0
     try {
-        let nombreCliente = await Persona.findOne({ where: { email: email } });
+        let nombreCliente = await Persona.findOne({ where: { email: mail } });
         productos.map(async (compra) => {
             var nuevaCompra = await new Compra({
                 cliente: nombreCliente,
@@ -168,6 +176,7 @@ server.post('/mailing-compra', async (req, res) => {
             await nuevaCompra.save();
         })
     } catch (error) {
+        errores++
         let info = await mailer.sendMail({
             from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
             to: 'guille.l.martos@gmail.com', // list of receivers
@@ -189,8 +198,11 @@ server.post('/mailing-compra', async (req, res) => {
              </p>
         `,
         });
+        res.status(500).send({ messagge: 'error mapeando compra a DB' })
     }
-
+    if (errores == 1) {
+        console.log('hubo error en el paso a tabla de compra')
+    }
     try {
         let info = await mailer.sendMail({
             from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
@@ -243,8 +255,9 @@ server.post('/mailing-compra', async (req, res) => {
              </p>
         `,
         });
+        res.status(503).send({ messagge: 'error en el mailing, pero bien cargado en db' })
     }
-    res.status(200)
+    res.status(200).send('todo ok!')
 })
 
 //Busqueda Persona por pass para activar x mailing
