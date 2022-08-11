@@ -1,7 +1,7 @@
 const express = require('express')
 const server = express();
 //me traigo los modelos para poder interactuar con mi db en los paths
-const { Categoria, Producto, Persona } = require('../db');
+const { Categoria, Producto, Persona, Compra } = require('../db');
 
 
 server.use(express.json());
