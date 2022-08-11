@@ -7,12 +7,8 @@ const { Categoria, Producto, Persona } = require('../db');
 server.use(express.json());
 
 server.get('/categorias', async (req, res, next) => {
-
-
     const rta = await Categoria.findAll();
-
     res.json(rta);
-
 })
 
 server.get('/usuarios', async (req, res, next) => {
@@ -72,9 +68,17 @@ server.post('/crear', async (req, res, next) => {
             through: { attributes: [] }
         }
     })
-
     res.json(rta)
 })
 
+
+server.get('/comprasTotalesPorCliente', async (req, res) => {
+    compras = await Compra.findAll({
+        order: [
+            ['cliente', 'ASC']
+        ],
+    })
+    res.status(200).send(compras)
+})
 
 module.exports = server;

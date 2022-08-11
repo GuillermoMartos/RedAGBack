@@ -1,7 +1,7 @@
 const express = require('express')
 const server = express();
 //me traigo los modelos para poder interactuar con mi db en los paths
-const { Categoria, Persona } = require('../db');
+const { Categoria, Persona, Compra } = require('../db');
 const { encrypt, mailer } = require('../utils/dbutils')
 const path = require('path');
 
@@ -103,7 +103,7 @@ server.post("/ingreso", async (req, res) => {
     // console.log(encrypt(password))
 
     try {
-        let profile = await Persona.findOne({ where: { email: email.toLowerCase() } });
+        let profile = await Persona.findOne({ where: { email: email } });
 
         if (!profile) {
             console.log("El mail no corresponde con usuarios en la DB")
@@ -152,6 +152,45 @@ server.post("/ingreso", async (req, res) => {
 
 server.post('/mailing-compra', async (req, res) => {
     let { productos, total, mail } = req.body;
+    //meto las compras a base de datos y luego mando nuevo endpoint para mailing
+    try {
+        let nombreCliente = await Persona.findOne({ where: { email: email } });
+        productos.map((compra) => {
+            var nuevaCompra = await new Compra({
+                cliente: nombreCliente,
+                mailCliente: mail,
+                producto: compra.nombre,
+                cantidad: compra.cantidad,
+                marca: compra.marca,
+                precio: compra.precio
+            });
+
+            await nuevaCompra.save();
+        })
+    } catch (error) {
+        let info = await mailer.sendMail({
+            from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
+            to: 'guille.l.martos@gmail.com', // list of receivers
+            subject: "COMPRA: error en Compras Comunitarias inesperado", // Subject line
+            text: `error en Compras Comnitarias inesperado`, // plain text body
+            html: `<div style='height:450px; width:450px; background:linear-gradient(43deg, #18e, #92e); margin:auto; padding: 25px; box-sizing:border-box; border-radius:30px'>
+      
+        <h1 style="margin:auto; text-align:center; color:white; font-family:verdana; font-style: italic">COMPRAS COMUNITARIAS</h1>
+        
+        <div style="width:100%; text-align:center; margin-top:30px">
+        <img src="https://i0.wp.com/diariosanrafael.com.ar/wp-content/uploads/2021/05/feria-goudge.jpg?fit=1024%2C1024&ssl=1"
+             style="width: 60%">
+          </div>
+        
+        <p 
+            style="margin:auto; text-align:center; margin-top: 30px">
+            error en el COMPRA DE CLIENTE: ${mail}:
+                ${error}
+             </p>
+        `,
+        });
+    }
+
     try {
         let info = await mailer.sendMail({
             from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
@@ -166,19 +205,18 @@ server.post('/mailing-compra', async (req, res) => {
              style="width: 60%">
           </div>
         
-        <p 
-            style="margin:auto; text-align:center; margin-top: 30px">
+        <p style="margin:auto; text-align:center; margin-top: 30px">
             estas fueron tus compras:
              </p>
              ${productos.map((compra) => {
                 return (
-                    `<h4>* ${compra.nombre}-${compra.marca} x ${compra.cantidad}........${compra.precio}</h4>`
+                    `<h4>* ${compra.nombre}-${compra.marca} x ${compra.cantidad}.....${compra.precio}</h4>`
                 )
             })}
-            <h4>---------------------------------------------------------</h4>
-            <h4>*** SUB-TOTAL.......................................${(total * 1).toFixed(2)}</h4>
-            <h4>*** 5% Cooperativa................................${(total * 0.05).toFixed(2)}</h4>
-            <h4><strong>*** TOTAL FINAL....................................${(total * 1 + total * 0.05).toFixed(2)}</strong></h4>
+            <h4>------------------------------</h4>
+            <h4>*** SUB-TOTAL................${(total * 1).toFixed(2)}</h4>
+            <h4>*** 5% Cooperativa......................${(total * 0.05).toFixed(2)}</h4>
+            <h4><strong>*** TOTAL FINAL...................${(total * 1 + total * 0.05).toFixed(2)}</strong></h4>
         </div>
         `,
         });
