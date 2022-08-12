@@ -34,15 +34,19 @@ server.get('/getAdmins', async (req, res, next) => {
 })
 
 server.post('/hacer-admin', async (req, res, next) => {
-    const { mail } = req.body
+    const { mail, mailAdmin } = req.body
     try {
-        let profile = await Persona.findOne({ where: { email: mail } });
-        if (profile) {
-            const nuevoAdmin = await Admin.create({
-                email: mail
-            })
-            res.status(200).send({ admin: true })
+        let admin = await Admin.findOne({ where: { email: mailAdmin } })
+        if (admin) {
+            let profile = await Persona.findOne({ where: { email: mail } });
+            if (profile) {
+                const nuevoAdmin = await Admin.create({
+                    email: mail
+                })
+                res.status(200).send({ admin: true })
+            }
         }
+        else res.status(403).send({ messagge: 'accion prohibida a no administradorxs' })
     }
     catch (error) {
         res.status(500).send({ messagge: 'error al buscar persona para admin o creando admin', error })
