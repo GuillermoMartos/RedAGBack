@@ -15,6 +15,13 @@ server.get('/usuarios', async (req, res, next) => {
     const rta = await Persona.findAll();
     res.json(rta);
 })
+server.post('/acceso', async (req, res, next) => {
+    const { mail } = req.body
+    console.log(mail)
+    let profile = await Persona.findOne({ where: { email: mail } });
+    console.log(profile.nombre)
+    res.status(200).send({ admin: true })
+})
 
 server.post('/crear', async (req, res, next) => {
     const { nombre,
