@@ -26,7 +26,7 @@ server.post('/acceso', async (req, res, next) => {
 server.get('/getAdmins', async (req, res, next) => {
     try {
         let profile = await Admin.findAll();
-        res.status(200).send(profile.email)
+        res.status(200).send(profile)
     }
     catch (error) {
         res.status(500).send({ messagge: 'error al buscar admins, reintente' })
