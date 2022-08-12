@@ -106,19 +106,15 @@ server.post("/ingreso", async (req, res) => {
         let profile = await Persona.findOne({ where: { email: email } });
 
         if (!profile) {
-            console.log("El mail no corresponde con usuarios en la DB")
             return res.send({ notFound: "El mail no corresponde con usuarios en la DB", email });
         }
         if (profile.active === false) {
-            console.log("se debe confirmar la cuenta para entrar (ver mail)")
             return res.json({ account: "se debe confirmar la cuenta para entrar (ver mail)", email });
         }
         if (encrypt(password) == profile.password) {
-            console.log('todo ok, logeado:', profile)
             return res.send(profile);
         }
         if (encrypt(password) !== profile.password) {
-            console.log(profile.password, 'no coincide con', encrypt(password))
             return res.send({ badPassword: "tu contraseña no es la correcta" })
         }
         console.log('todo ok, logeado')

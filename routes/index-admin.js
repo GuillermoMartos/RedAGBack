@@ -1,7 +1,7 @@
 const express = require('express')
 const server = express();
 //me traigo los modelos para poder interactuar con mi db en los paths
-const { Categoria, Producto, Persona, Compra } = require('../db');
+const { Categoria, Producto, Persona, Compra, Admin } = require('../db');
 
 
 server.use(express.json());
@@ -15,13 +15,29 @@ server.get('/usuarios', async (req, res, next) => {
     const rta = await Persona.findAll();
     res.json(rta);
 })
+
 server.post('/acceso', async (req, res, next) => {
     const { mail } = req.body
-    console.log(mail)
-    console.log(req.body)
-    // let profile = await Persona.findOne({ where: { email: mail } });
-    // console.log(profile.nombre)
+    let profile = await Admin.findOne({ where: { email: mail } });
+    console.log(profile.nombre)
     res.status(200).send({ admin: true })
+})
+
+server.post('/hacer-admin', async (req, res, next) => {
+    const { mail } = req.body
+    try {
+        let profile = await Persona.findOne({ where: { email: mail } });
+        if (profile) {
+            const nuevoAdmin = await Admin.create({
+                email: mail
+            })
+            res.status(200).send({ admin: true })
+        }
+    }
+    catch (error) {
+        res.status(500).send({ messagge: 'error al buscar persona para admin o creando admin', error })
+    }
+    res.send(304).send({ messagge: 'la persona para hacer admin no tiene el mail registrado en BD' })
 })
 
 server.post('/crear', async (req, res, next) => {
@@ -48,7 +64,7 @@ server.post('/crear', async (req, res, next) => {
 
     // Asigno una Categoría existente al Producto o la creo y la asigno
     for (let i of categoria) {
-        console.log(i)
+        // console.log(i)
         const categorizacion = await Categoria.findOne({
             where: {
                 nombre: i
