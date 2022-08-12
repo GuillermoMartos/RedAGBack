@@ -45,6 +45,7 @@ server.post('/hacer-admin', async (req, res, next) => {
                 })
                 res.status(200).send({ admin: true })
             }
+            else res.status(403).send({ messagge: 'accion prohibida la persona que se intenta asignar no tiene el mail registrado en BD' })
         }
         else res.status(403).send({ messagge: 'accion prohibida a no administradorxs' })
     }
