@@ -18,8 +18,9 @@ server.get('/usuarios', async (req, res, next) => {
 server.post('/acceso', async (req, res, next) => {
     const { mail } = req.body
     console.log(mail)
-    let profile = await Persona.findOne({ where: { email: mail } });
-    console.log(profile.nombre)
+    console.log(req.body)
+    // let profile = await Persona.findOne({ where: { email: mail } });
+    // console.log(profile.nombre)
     res.status(200).send({ admin: true })
 })
 
