@@ -19,7 +19,7 @@ server.post('/usuarios', async (req, res, next) => {
             const rta = await Persona.findAll();
             res.status(200).send(rta);
         }
-        else res.send(403).send({ messagge: 'accion prohibida para no administradorxs' })
+        else res.status(403).send({ messagge: 'accion prohibida para no administradorxs' })
     }
     catch (error) {
         res.status(500).send({ messagge: 'error al buscar admin, reintente' })
@@ -31,7 +31,7 @@ server.post('/acceso', async (req, res, next) => {
     try {
         let admin = await Admin.findOne({ where: { email: mail } });
         if (admin) res.status(200).send({ admin: true })
-        else res.send(403).send({ messagge: 'accion prohibida para no administradorxs' })
+        else res.status(403).send({ messagge: 'accion prohibida para no administradorxs' })
     }
     catch (error) {
         res.status(500).send({ messagge: 'error al buscar admin, reintente' })
@@ -73,7 +73,7 @@ server.post('/hacer-admin', async (req, res, next) => {
     catch (error) {
         res.status(500).send({ messagge: 'error al buscar persona para admin o creando admin', error })
     }
-    res.send(304).send({ messagge: 'la persona para hacer admin no tiene el mail registrado en BD' })
+    res.status(304).send({ messagge: 'la persona para hacer admin no tiene el mail registrado en BD' })
 })
 
 server.post('/crear', async (req, res, next) => {
