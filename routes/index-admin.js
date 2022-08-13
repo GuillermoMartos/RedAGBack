@@ -47,7 +47,7 @@ server.post('/getAdmins', async (req, res, next) => {
             let profile = await Admin.findAll();
             res.status(200).send(profile)
         }
-        else res.send(403).send({ messagge: 'accion prohibida para no administradorxs' })
+        else res.status(403).send({ messagge: 'accion prohibida para no administradorxs' })
     }
     catch (error) {
         res.status(500).send({ messagge: 'error al buscar admins, reintente' })
