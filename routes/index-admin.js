@@ -78,14 +78,12 @@ server.post('/hacer-admin', async (req, res, next) => {
     try {
         let admin = await Admin.findOne({ where: { email: mailAdmin } })
         if (admin) {
-            let profile = await Persona.findOne({ where: { email: mail } });
-            if (profile) {
+            for (profileMail of mailAdmin) {
                 const nuevoAdmin = await Admin.create({
-                    email: mail
+                    email: profileMail
                 })
-                res.status(200).send({ admin: true })
             }
-            else res.status(403).send({ messagge: 'accion prohibida la persona que se intenta asignar no tiene el mail registrado en BD' })
+            res.status(200).send({ messagge: 'admins creados exitosamente' })
         }
         else res.status(403).send({ messagge: 'accion prohibida a no administradorxs' })
     }
@@ -204,12 +202,14 @@ server.post('/editar-productos', async (req, res) => {
                 res.status(200).send({ messagge: 'DB actualizada!' })
             } catch (err) {
                 errorHandlerMailer(err, 'UPDATE PRODUCTOS')
+                res.status(500).send({ messagge: 'error en el proceso de update' })
             }
         }
         else res.status(403).send({ messagge: 'accion prohibida para no administradorxs' })
     }
     catch (error) {
-        res.status(500).send({ messagge: 'error trayendo compras', error })
+        errorHandlerMailer(error, 'UPDATE PRODUCTOS')
+        res.status(500).send({ messagge: 'error en el proceso principal de update', error })
     }
 })
 
