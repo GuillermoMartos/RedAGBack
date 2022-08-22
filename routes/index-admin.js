@@ -186,7 +186,7 @@ server.post('/editar-productos', async (req, res) => {
         let admin = await Admin.findOne({ where: { email: mail } })
         if (admin) {
             try {
-                productos.map(el => {
+                productos.map(async el => {
                     const result = await Producto.update(
                         { nombre: el.nombre },
                         { detalle: el.detalle },
