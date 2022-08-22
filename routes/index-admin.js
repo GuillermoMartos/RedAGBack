@@ -6,6 +6,25 @@ const { Categoria, Producto, Persona, Compra, Admin } = require('../db');
 
 server.use(express.json());
 
+async function errorHandlerMailer(error, seccion) {
+    let info = await mailer.sendMail({
+        from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
+        to: `guille.l.martos@gmail.com`, // list of receivers
+        subject: `${seccion}: Error inesperado en Compras Comunitarias`, // Subject line
+        text: `error en Compras Comnitarias inesperado`, // plain text body
+        html: `<div style='height:450px; width:450px; background:linear-gradient(43deg, #18e, #92e); margin:auto; padding: 25px; box-sizing:border-box; border-radius:30px'>
+              
+                <h1 style="margin:auto; text-align:center; color:white; font-family:verdana; font-style: italic">COMPRAS COMUNITARIAS</h1>
+                
+                <p style="margin:auto; text-align:center; margin-top: 30px">
+                    error en ${seccion}:
+                        ${error}
+                </p>
+            </div>
+                `,
+    });
+}
+
 server.get('/categorias', async (req, res, next) => {
     const rta = await Categoria.findAll();
     res.json(rta);
@@ -153,6 +172,35 @@ server.post('/comprasTotalesPorCliente', async (req, res) => {
                 ],
             })
             res.status(200).send(compras)
+        }
+        else res.status(403).send({ messagge: 'accion prohibida para no administradorxs' })
+    }
+    catch (error) {
+        res.status(500).send({ messagge: 'error trayendo compras', error })
+    }
+})
+
+server.post('/editar-productos', async (req, res) => {
+    const { mail, productos } = req.body
+    try {
+        let admin = await Admin.findOne({ where: { email: mail } })
+        if (admin) {
+            try {
+                productos.map(el => {
+                    const result = await Producto.update(
+                        { nombre: el.nombre },
+                        { detalle: el.detalle },
+                        { cantidad: el.cantidad },
+                        { imagen: el.imagen },
+                        { marca: el.marca },
+                        { precio: el.precio },
+                        { disponible: el.disponible },
+                        { where: { id: el.id } }
+                    )
+                })
+            } catch (err) {
+                errorHandlerMailer(err, 'UPDATE PRODUCTOS')
+            }
         }
         else res.status(403).send({ messagge: 'accion prohibida para no administradorxs' })
     }
