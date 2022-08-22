@@ -92,6 +92,27 @@ server.post('/hacer-admin', async (req, res, next) => {
     }
 })
 
+server.post('/eliminar-admin', async (req, res, next) => {
+    const { mail, mailAdmin } = req.body
+    try {
+        let admin = await Admin.findOne({ where: { email: mail } })
+        if (admin) {
+            for (profileMail of mailAdmin) {
+                const nuevoAdmin = await Admin.destroy({
+                    where: {
+                        email: profileMail
+                    }
+                })
+            }
+            return res.status(200).send({ messagge: 'admins eliminados exitosamente' })
+        }
+        else res.status(403).send({ messagge: 'accion prohibida a no administradorxs' })
+    }
+    catch (error) {
+        res.status(500).send({ messagge: 'error al buscar persona para admin o eliminando admin', error })
+    }
+})
+
 server.post('/crear', async (req, res, next) => {
     const { mail } = req.body
     try {
