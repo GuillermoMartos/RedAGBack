@@ -207,6 +207,7 @@ server.post('/editar-productos', async (req, res) => {
     catch (error) {
         res.status(500).send({ messagge: 'error trayendo compras', error })
     }
+    res.status(200).send({ messagge: 'DB actualizada!' })
 })
 
 module.exports = server;
