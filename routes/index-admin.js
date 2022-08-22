@@ -83,14 +83,13 @@ server.post('/hacer-admin', async (req, res, next) => {
                     email: profileMail
                 })
             }
-            res.status(200).send({ messagge: 'admins creados exitosamente' })
+            return res.status(200).send({ messagge: 'admins creados exitosamente' })
         }
         else res.status(403).send({ messagge: 'accion prohibida a no administradorxs' })
     }
     catch (error) {
         res.status(500).send({ messagge: 'error al buscar persona para admin o creando admin', error })
     }
-    res.status(304).send({ messagge: 'la persona para hacer admin no tiene el mail registrado en BD' })
 })
 
 server.post('/crear', async (req, res, next) => {
