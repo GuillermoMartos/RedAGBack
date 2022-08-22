@@ -187,20 +187,19 @@ server.post('/editar-productos', async (req, res) => {
         if (admin) {
             try {
                 productos.map(async el => {
-                    await Producto.findOneAndUpdate(
-                        { id: el.id },
-                        {
-                            $set: {
-                                nombre: el.nombre,
-                                detalle: el.detalle,
-                                cantidad: el.cantidad,
-                                imagen: el.imagen,
-                                marca: el.marca,
-                                precio: el.precio,
-                                disponible: el.disponible,
-                            },
-                            new: true,
-                        })
+                    await Producto.update({
+                        nombre: el.nombre,
+                        detalle: el.detalle,
+                        cantidad: el.cantidad,
+                        imagen: el.imagen,
+                        marca: el.marca,
+                        precio: el.precio,
+                        disponible: el.disponible
+                    }, {
+                        where: {
+                            id: el.id
+                        }
+                    });
                 })
                 res.status(200).send({ messagge: 'DB actualizada!' })
             } catch (err) {
