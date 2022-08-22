@@ -76,7 +76,7 @@ server.post('/getAdmins', async (req, res, next) => {
 server.post('/hacer-admin', async (req, res, next) => {
     const { mail, mailAdmin } = req.body
     try {
-        let admin = await Admin.findOne({ where: { email: mailAdmin } })
+        let admin = await Admin.findOne({ where: { email: mail } })
         if (admin) {
             for (profileMail of mailAdmin) {
                 const nuevoAdmin = await Admin.create({
