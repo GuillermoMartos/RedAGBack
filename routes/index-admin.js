@@ -187,17 +187,22 @@ server.post('/editar-productos', async (req, res) => {
         if (admin) {
             try {
                 productos.map(async el => {
-                    const result = await Producto.update(
-                        { nombre: el.nombre },
-                        { detalle: el.detalle },
-                        { cantidad: el.cantidad },
-                        { imagen: el.imagen },
-                        { marca: el.marca },
-                        { precio: el.precio },
-                        { disponible: el.disponible },
-                        { where: { id: el.id } }
-                    )
+                    await Producto.findOneAndUpdate(
+                        { id: el.id },
+                        {
+                            $set: {
+                                nombre: el.nombre,
+                                detalle: el.detalle,
+                                cantidad: el.cantidad,
+                                imagen: el.imagen,
+                                marca: el.marca,
+                                precio: el.precio,
+                                disponible: el.disponible,
+                            },
+                            new: true,
+                        })
                 })
+                res.status(200).send({ messagge: 'DB actualizada!' })
             } catch (err) {
                 errorHandlerMailer(err, 'UPDATE PRODUCTOS')
             }
@@ -207,7 +212,6 @@ server.post('/editar-productos', async (req, res) => {
     catch (error) {
         res.status(500).send({ messagge: 'error trayendo compras', error })
     }
-    res.status(200).send({ messagge: 'DB actualizada!' })
 })
 
 module.exports = server;
