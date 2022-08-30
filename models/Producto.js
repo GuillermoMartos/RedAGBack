@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     imagen: {
-      type: Sequelize.BLOB,
+      type: DataTypes.BLOB,
       allowNull: true,
       get() {
         return this.getDataValue('picture').toString('utf8');
