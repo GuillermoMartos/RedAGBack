@@ -127,6 +127,8 @@ server.post('/crear', async (req, res, next) => {
                 cantidad,
                 categoria } = req.body
 
+            console.log(imagen)
+
             //Creo el nuevo Producto
             const nuevoProducto = await Producto.create({
                 nombre,
@@ -174,6 +176,7 @@ server.post('/crear', async (req, res, next) => {
         else res.status(403).send({ messagge: 'accion prohibida para no administradorxs' })
     }
     catch (error) {
+        console.log(error)
         res.status(500).send({ messagge: 'error creando producto', error })
     }
 })
