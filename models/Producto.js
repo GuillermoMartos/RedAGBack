@@ -26,8 +26,11 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     imagen: {
-      type: DataTypes.TEXT,
-      allowNull: true
+      type: Sequelize.BLOB,
+      allowNull: true,
+      get() {
+        return this.getDataValue('picture').toString('utf8');
+      },
     },
     marca: {
       type: DataTypes.STRING,

@@ -125,9 +125,8 @@ server.post('/crear', async (req, res, next) => {
                 precio,
                 disponible,
                 cantidad,
-                categoria } = req.body
+                categoria } = await req.body
 
-            console.log(imagen)
 
             //Creo el nuevo Producto
             const nuevoProducto = await Producto.create({
