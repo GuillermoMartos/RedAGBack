@@ -8,8 +8,8 @@ conn.sync({ force: false }).then(async () => {
   server.listen(port, async () => {
     console.log(port); // eslint-disable-line no-console
   });
-
-  await Admin.create({ email: 'guille.l.martos@gmail.com' })
+  //funcion para hacer un admin si se quiere resetear la BD
+  // await Admin.create({ email: 'guille.l.martos@gmail.com' })
 
 
   //esta funcion comentada es para crear todas las categorias
