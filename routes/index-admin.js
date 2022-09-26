@@ -233,4 +233,27 @@ server.post('/editar-productos', async (req, res) => {
     }
 })
 
+server.post('/eliminarProd', async (req, res) => {
+    const { mail, id } = req.body
+    console.log('mail:', mail, 'id:', id)
+    try {
+        let admin = await Admin.findOne({ where: { email: mail } })
+        if (admin) {
+            try {
+                const count = await Producto.destroy({ where: { id: id } });
+                console.log(`deleted row(s): ${count}`);
+                res.status(200).send({ messagge: 'DB actualizada!' })
+            } catch (err) {
+                errorHandlerMailer(err, 'ELIMINAR PROD')
+                res.status(500).send({ messagge: 'error en el proceso de eliminarProd' })
+            }
+        }
+        else res.status(403).send({ messagge: 'accion prohibida para no administradorxs' })
+    }
+    catch (error) {
+        errorHandlerMailer(error, 'ELIMINAR PROD')
+        res.status(500).send({ messagge: 'error en el proceso principal de eliminarProd', error })
+    }
+})
+
 module.exports = server;
