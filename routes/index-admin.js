@@ -207,7 +207,7 @@ server.post('/borrarCompras', async (req, res) => {
                 where: {},
                 truncate: true
             })
-            res.status(200).send(compras)
+            res.status(200).send({})
         }
         else res.status(403).send({ messagge: 'accion prohibida para no administradorxs' })
     }
