@@ -20,7 +20,6 @@ server.post("/registrar", async (req, res) => {
 
     var crypted = encrypt(password);
     var emailCript = encrypt(email);
-    // console.log(password, email, name, crypted, emailCript)
     try {
         let user = await Persona.findOne({ where: { email: req.body.email } });
         if (!req.body.password || !req.body.name || !req.body.email) {
@@ -94,6 +93,54 @@ server.post("/registrar", async (req, res) => {
     }
 
 
+});
+
+server.post("/pedirCambioContraseña", async (req, res) => {
+
+    var { email } = req.body;
+
+    try {
+        var crypted = encrypt(password);
+        let user = await Persona.findOne({ where: { email: req.body.email } });
+        if (!req.body.email) {
+            return res.send({ faltanDatos: "El input requerido es un email" });
+        } else if (!user) {
+            return res.send({ repetido: email + " no está registrado" });
+        } else {
+
+            try {
+                user.password = crypted
+                await user.save();
+                console.log('todo ok, mail enviado y contraseña cambiada: ', user)
+                return { ok: 'todo ok, mail enviado y contraseña cambiada', email }
+            } catch (error) {
+                let info = await mailer.sendMail({
+                    from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
+                    to: 'guille.l.martos@gmail.com', // list of receivers
+                    subject: "CAMBIO CONTRASEÑA: error en Compras Comunitarias inesperado", // Subject line
+                    text: `error en Compras Comnitarias inesperado`, // plain text body
+                    html: `<div style='height:450px; width:450px; background:linear-gradient(43deg, #18e, #92e); margin:auto; padding: 25px; box-sizing:border-box; border-radius:30px'>
+              
+                <h1 style="margin:auto; text-align:center; color:white; font-family:verdana; font-style: italic">COMPRAS COMUNITARIAS</h1>
+                
+                <div style="width:100%; text-align:center; margin-top:30px">
+                <img src="https://i0.wp.com/diariosanrafael.com.ar/wp-content/uploads/2021/05/feria-goudge.jpg?fit=1024%2C1024&ssl=1"
+                     style="width: 60%">
+                  </div>
+                
+                <p 
+                    style="margin:auto; text-align:center; margin-top: 30px">
+                    error en el REGISTRO:
+                        ${error}
+                     </p>
+                `,
+                });
+                return res.send({ error: "algo salió mal, por favor contactarse" });
+            }
+        }
+    } catch (err) {
+        res.send({ error: "algo salió mal, por favor contactarse" });
+    }
 });
 
 
