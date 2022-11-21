@@ -97,7 +97,7 @@ server.post("/registrar", async (req, res) => {
 
 server.post("/pedirCambioContraseña", async (req, res) => {
 
-    var { email } = req.body;
+    var { email, password } = req.body;
 
     try {
         var crypted = encrypt(password);
