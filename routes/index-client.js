@@ -95,7 +95,7 @@ server.post("/registrar", async (req, res) => {
 
 });
 
-server.post("/pedirCambioContraseña", async (req, res) => {
+server.post("/pedirCambioPassword", async (req, res) => {
 
     var { email, password } = req.body;
 
@@ -111,8 +111,8 @@ server.post("/pedirCambioContraseña", async (req, res) => {
             try {
                 user.password = crypted
                 await user.save();
-                console.log('todo ok, mail enviado y contraseña cambiada: ', user)
-                return { ok: 'todo ok, mail enviado y contraseña cambiada', email }
+                console.log('todo ok contraseña cambiada: ', user)
+                return { ok: 'todo ok ontraseña cambiada', email }
             } catch (error) {
                 let info = await mailer.sendMail({
                     from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
