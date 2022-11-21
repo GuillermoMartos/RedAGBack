@@ -195,8 +195,6 @@ server.post("/ingreso", async (req, res) => {
 
 server.post('/registro-compra', async (req, res) => {
     let { productos, mail } = req.body;
-    // let cliente = await Persona.findOne({ where: { email: mail } });
-    // console.log('p:', productos, 't', total, 'm', mail, 'dbRes', cliente.nombre)
     try {
         let cliente = await Persona.findOne({ where: { email: mail } });
         productos.map(async (compra) => {
@@ -240,7 +238,6 @@ server.post('/registro-compra', async (req, res) => {
 
 server.post('/mailing-compra', async (req, res) => {
     let { productos, total, mail } = req.body;
-    console.log('ENVIO DE MAILIIIIIIIIIIIING')
     try {
         let info = await mailer.sendMail({
             from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address

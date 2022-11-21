@@ -198,6 +198,24 @@ server.post('/comprasTotalesPorCliente', async (req, res) => {
     }
 })
 
+server.post('/borrarCompras', async (req, res) => {
+    const { mail } = req.body
+    try {
+        let admin = await Admin.findOne({ where: { email: mail } })
+        if (admin) {
+            Compra.destroy({
+                where: {},
+                truncate: true
+            })
+            res.status(200).send(compras)
+        }
+        else res.status(403).send({ messagge: 'accion prohibida para no administradorxs' })
+    }
+    catch (error) {
+        res.status(500).send({ messagge: 'error trayendo compras', error })
+    }
+})
+
 server.post('/editar-productos', async (req, res) => {
     const { mail, productos } = req.body
     try {
