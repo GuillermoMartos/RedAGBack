@@ -112,7 +112,7 @@ server.post("/pedirCambioPassword", async (req, res) => {
                 user.password = crypted
                 await user.save();
                 console.log('todo ok contraseña cambiada: ', user)
-                return { ok: 'todo ok ontraseña cambiada', email }
+                return res.send({ ok: 'todo ok ontraseña cambiada', email })
             } catch (error) {
                 let info = await mailer.sendMail({
                     from: '"Compras Comunitarias" <guille.l.martos@gmail.com>', // sender address
